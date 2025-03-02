@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A file storage app using cloudinary to store files and Prisma ORM to manage sql.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node --watch app.js",
@@ -12,7 +13,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^6.4.1",
     "ejs": "^3.1.10",
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "prisma": "^6.4.1"
   }
 }

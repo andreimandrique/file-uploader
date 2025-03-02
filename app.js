@@ -1,7 +1,13 @@
-const express = require("express");
+import express from "express";
+import path from "path";
+
 const app = express();
 const port = 3000;
-const path = require("path");
+
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -11,7 +17,7 @@ app.use(express.static(assetsPath));
 
 app.use(express.urlencoded({ extended: true }));
 
-const indexRouter = require("./routes/indexRouter");
+import indexRouter from "./routes/indexRouter.js";
 
 app.get("/", indexRouter);
 
