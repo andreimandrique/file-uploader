@@ -3,14 +3,12 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.user.create({
-    data: {
+  const user = await prisma.user.findUnique({
+    where: {
       username: "andrei",
-      password: "123",
     },
   });
-  const users = await prisma.user.findMany();
-  console.log(users);
+  console.log(user);
 }
 
 main()
