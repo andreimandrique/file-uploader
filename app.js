@@ -4,26 +4,11 @@ const app = express();
 const port = 3000;
 
 import session from "express-session";
-import { PrismaSessionStore } from "@quixo3/prisma-session-store";
-import { PrismaClient } from "@prisma/client";
+import sessionConfig from "./config/sessionConfig.js";
 import passport from "passport";
 import flash from "express-flash";
 
-app.use(
-  session({
-    cookie: {
-      maxAge: 7 * 24 * 60 * 60 * 1000, // ms
-    },
-    secret: "a santa at nasa",
-    resave: true,
-    saveUninitialized: true,
-    store: new PrismaSessionStore(new PrismaClient(), {
-      checkPeriod: 2 * 60 * 1000, //ms
-      dbRecordIdIsSessionId: true,
-      dbRecordIdFunction: undefined,
-    }),
-  })
-);
+app.use(session(sessionConfig));
 app.use(passport.session());
 app.use(flash());
 
@@ -44,6 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 import indexRouter from "./routes/indexRouter.js";
 import logoutRouter from "./routes/logoutRouter.js";
 import dashboardRouter from "./routes/dashboardRouter.js";
+import addFileRouter from "./routes/addFileRouter.js";
 
 import showCurrentUser from "./middlewares/showCurrentUser.js";
 import isLoggedIn from "./middlewares/isLoggedIn.js";
@@ -54,6 +40,7 @@ app.use("/logout", logoutRouter);
 app.use(showCurrentUser);
 
 app.use("/dashboard", isLoggedIn, dashboardRouter);
+app.use("/addFile", addFileRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

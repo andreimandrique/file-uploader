@@ -1,4 +1,4 @@
-import passport from "../authentication/passportLocal.js";
+import passport from "../config/passportLocal.js";
 
 const indexGet = (req, res) => {
   res.render("index");
