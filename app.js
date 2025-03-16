@@ -30,6 +30,7 @@ import indexRouter from "./routes/indexRouter.js";
 import logoutRouter from "./routes/logoutRouter.js";
 import dashboardRouter from "./routes/dashboardRouter.js";
 import addFileRouter from "./routes/addFileRouter.js";
+import downloadRouter from "./routes/downloadRouter.js";
 
 import showCurrentUser from "./middlewares/showCurrentUser.js";
 import isLoggedIn from "./middlewares/isLoggedIn.js";
@@ -39,8 +40,9 @@ app.use("/logout", logoutRouter);
 
 app.use(showCurrentUser);
 
-app.use("/dashboard", isLoggedIn, dashboardRouter);
+app.use("/dashboard", dashboardRouter);
 app.use("/addFile", addFileRouter);
+app.use("/download", downloadRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
