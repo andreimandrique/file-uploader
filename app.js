@@ -36,12 +36,12 @@ import showCurrentUser from "./middlewares/showCurrentUser.js";
 import isLoggedIn from "./middlewares/isLoggedIn.js";
 
 app.use("/", indexRouter);
-app.use("/logout", logoutRouter);
+app.use("/log-out", logoutRouter);
 
 app.use(showCurrentUser);
 
 app.use("/dashboard", dashboardRouter);
-app.use("/addFile", addFileRouter);
+app.use("/add-file", addFileRouter);
 app.use("/download", downloadRouter);
 
 app.listen(port, () => {

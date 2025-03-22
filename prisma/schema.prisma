@@ -21,8 +21,19 @@ model Session {
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  user_id Int @id @default(autoincrement())
   username  String   @unique
   password String
   createdAt DateTime @default(now())
+  files File[]
+}
+
+model File {
+  file_id Int @id @default(autoincrement())
+  file_name String @db.VarChar(255)
+  public_id String @db.VarChar(100)
+  bytes Int 
+  secure_url String @db.VarChar(255)
+  owner User @relation(fields: [owner_id], references: [user_id])
+  owner_id Int
 }

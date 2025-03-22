@@ -1,6 +1,10 @@
 import multer from "multer";
 import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 },
@@ -12,15 +16,30 @@ const addFileGet = (req, res) => {
 
 const addFilePost = [
   upload.single("myFile"),
-  (req, res) => {
+  async (req, res) => {
     if (!req.file) {
-      return res.status(400).send("No file uploaded or file too large");
+      const errors = [{ msg: "No file upload or file is too big" }];
+      res.render("addFile", { errors: errors });
     }
-    uploadToCloudinary(req.file.buffer)
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
 
-    res.render("addFile");
+    try {
+      const cloudinaryFile = await uploadToCloudinary(req.file.buffer);
+      await prisma.file.create({
+        data: {
+          file_name: req.file.originalname,
+          public_id: cloudinaryFile.public_id,
+          bytes: cloudinaryFile.bytes,
+          secure_url: cloudinaryFile.secure_url,
+          owner_id: req.user.user_id,
+        },
+      });
+      res.render("addFile", {
+        success: `File ${req.file.originalname} upload Successfully`,
+      });
+    } catch (error) {
+      const errors = [{ msg: "There is an error uploading the file" }];
+      res.render("addFile", { errors: errors });
+    }
   },
 ];
 
