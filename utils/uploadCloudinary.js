@@ -3,7 +3,7 @@ import cloudinaryConfig from "../config/cloudinaryConfig.js";
 
 cloudinary.config(cloudinaryConfig);
 
-const uploadToCloudinary = (buffer) => {
+const uploadCloudinary = (buffer) => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       { folder: "file-uploader", resource_type: "auto" },
@@ -16,4 +16,4 @@ const uploadToCloudinary = (buffer) => {
   });
 };
 
-export default uploadToCloudinary;
+export default uploadCloudinary;

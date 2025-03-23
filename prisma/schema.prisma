@@ -25,6 +25,7 @@ model User {
   username  String   @unique
   password String
   createdAt DateTime @default(now())
+  limit Int @default(20971520)
   files File[]
 }
 

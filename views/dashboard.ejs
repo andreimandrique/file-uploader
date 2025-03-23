@@ -8,9 +8,38 @@
   </head>
   <body>
     <h3>WELCOME BACK <%= currentUser.username %></h3>
+    <p>Limit <%= currentUser.limit %> bytes</p>
     <ul>
-      <li><a href="/add-file">Add Task</a></li>
+      <li><a href="/add-file">Add File</a></li>
       <li><a href="/log-out">Log out</a></li>
     </ul>
+
+    <%- include('partials/successMsg.ejs', {success: locals.success}) %> <%-
+    include('partials/errorMsg.ejs', {errors: locals.errors}) %>
+
+    <table>
+      <tr>
+        <th>File Name</th>
+        <th>Bytes</th>
+        <th colspan="2">Action</th>
+      </tr>
+
+      <% files.forEach(function (file) { %>
+      <tr>
+        <td><%= file.file_name %></td>
+        <td><%= file.bytes %></td>
+        <td>
+          <form action="/delete/<%= file.file_id %>" method="post">
+            <button>Delete</button>
+          </form>
+        </td>
+        <td>
+          <form action="/download/<%= file.file_id %>" method="post">
+            <button>Download</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </table>
   </body>
 </html>

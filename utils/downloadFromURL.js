@@ -1,10 +1,7 @@
-import fs from "fs";
 import https from "https";
 
 const downloadFromURL = async (fileUrl) => {
   return new Promise((resolve, reject) => {
-    const fileStream = fs.createWriteStream(outputPath);
-
     https
       .get(fileUrl, (fileRes) => {
         if (fileRes.statusCode !== 200) {
@@ -13,10 +10,18 @@ const downloadFromURL = async (fileUrl) => {
           );
         }
 
-        fileRes.pipe(fileStream);
+        // Instead of writing to a file, collect data in memory as Buffer chunks
+        const chunks = [];
 
-        fileStream.on("finish", () => resolve("Download complete"));
-        fileStream.on("error", reject);
+        fileRes.on("data", (chunk) => {
+          chunks.push(chunk);
+        });
+
+        fileRes.on("end", () => {
+          // Combine all chunks into a single Buffer
+          const fileBuffer = Buffer.concat(chunks);
+          resolve(fileBuffer);
+        });
       })
       .on("error", reject);
   });

@@ -1,6 +1,6 @@
 import { param, validationResult } from "express-validator";
 import { PrismaClient } from "@prisma/client";
-import downloadFromURL from "../utils/downloadFromUrl.js";
+import deleteCloudinary from "../utils/deleteCloudinary.js";
 
 const prisma = new PrismaClient();
 
@@ -12,7 +12,7 @@ const validateFileId = [
     .withMessage("Task Id must be a positive integer"),
 ];
 
-const downloadPost = [
+const deletePost = [
   validateFileId,
   async (req, res) => {
     const { fileId } = req.params;
@@ -25,10 +25,6 @@ const downloadPost = [
           owner_id: req.user.user_id,
         },
       });
-
-      if (allFile == []) {
-        console.log("no file");
-      }
 
       if (!errors.isEmpty()) {
         const errorsMsg = [{ msg: "Invalid File Id" }];
@@ -45,21 +41,39 @@ const downloadPost = [
         const errorsMsg = [{ msg: "You don't have access to that File" }];
         return res.render("dashboard", { files: allFile, errors: errorsMsg });
       }
-      const fileUrl = specificFile.secure_url;
-      const fileName = specificFile.file_name;
-      const fileBuffer = await downloadFromURL(fileUrl);
 
-      // Set response headers
-      res.setHeader("Content-Disposition", `attachment; filename=${fileName}`);
-      res.setHeader("Content-Type", "application/octet-stream");
+      const filePublicId = specificFile.public_id;
+      const isImageDeleted = await deleteCloudinary(filePublicId, "image");
+      if (isImageDeleted.result == "not found") {
+        await deleteCloudinary(filePublicId, "raw");
+      }
 
-      // Send file buffer as response
-      res.send(fileBuffer);
+      await prisma.file.delete({
+        where: {
+          file_id: parseInt(fileId),
+        },
+      });
+
+      const newAllFile = await prisma.file.findMany({
+        where: {
+          owner_id: req.user.user_id,
+        },
+      });
+
+      return res.render("dashboard", {
+        files: newAllFile,
+        success: "File deleted successfully",
+      });
     } catch (error) {
-      const errorsMsg = [{ msg: "There is an error downloading the File" }];
-      return res.render("dashboard", { files: allFile, errors: errorsMsg });
+      const newAllFile = await prisma.file.findMany({
+        where: {
+          owner_id: req.user.user_id,
+        },
+      });
+      const errorsMsg = [{ msg: "There is an error deleting the File" }];
+      return res.render("dashboard", { files: newAllFile, errors: errorsMsg });
     }
   },
 ];
 
-export default downloadPost;
+export default deletePost;

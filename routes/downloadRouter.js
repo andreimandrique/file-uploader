@@ -1,8 +1,8 @@
 import { Router } from "express";
-import downloadGet from "../controllers/downloadController.js";
+import downloadPost from "../controllers/downloadController.js";
 
 const downloadRouter = Router();
 
-downloadRouter.get("/", downloadGet);
+downloadRouter.post("/:fileId", downloadPost);
 
 export default downloadRouter;
