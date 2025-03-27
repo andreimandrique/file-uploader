@@ -1,6 +1,6 @@
 import { param, validationResult } from "express-validator";
 import { PrismaClient } from "@prisma/client";
-import downloadFromURL from "../utils/downloadFromUrl.js";
+import downloadFromURL from "../utils/downloadFromURL.js";
 
 const prisma = new PrismaClient();
 
