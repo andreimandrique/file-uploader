@@ -1,4 +1,5 @@
 import passport from "passport";
+import bcrypt from "bcryptjs";
 import { Strategy as LocalStrategy } from "passport-local";
 import { PrismaClient } from "@prisma/client";
 
@@ -14,12 +15,14 @@ passport.use(
       });
 
       if (!user) {
-        return done(null, false, { message: "Incorrect Username" });
+        return done(null, false, { message: "Username doesn't exist" });
       }
 
-      if (user.password !== password) {
-        return done(null, false, { message: "Incorrect Password" });
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        return done(null, false, { message: "Incorrect password" });
       }
+
       return done(null, user);
     } catch (error) {
       return done(error);

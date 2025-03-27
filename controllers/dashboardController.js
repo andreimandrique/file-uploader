@@ -11,4 +11,4 @@ const dashboardGet = async (req, res) => {
   res.render("dashboard", { files: allFile });
 };
 
-export { dashboardGet };
+export default dashboardGet;

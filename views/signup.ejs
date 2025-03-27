@@ -8,23 +8,20 @@
     <link rel="stylesheet" href="/simple.min.css" />
   </head>
   <body>
-    <h1>Log In</h1>
-
-    <% if (messages.error) { %>
-    <p style="color: red"><%= messages.error %></p>
-    <% } %>
-
+    <h1>File Uploader</h1>
     <form action="" method="post">
+      <%- include('partials/successMsg.ejs', {success: locals.success}) %> <%-
+      include('partials/errorMsg.ejs', {errors: locals.errors}) %>
       <label for="username">Username:</label>
       <input type="text" name="username" id="username" />
       <label for="password">Password:</label>
       <input type="password" name="password" id="password" />
+      <label for="confirmPassword">Confirm Password:</label>
+      <input type="password" name="confirmPassword" id="confirmPassword" />
       <div>
-        <button>Log In</button>
+        <button type="submit">Sign Up</button>
       </div>
     </form>
-
-    <p>Do not have account? <a href="/sign-up">Sign Up</a></p>
-    <p>Try our Demo account? <a href="/demo">Click Here</a></p>
+    <p>Have a account? <a href="/">Log In</a></p>
   </body>
 </html>

@@ -1,11 +1,14 @@
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import { PrismaClient } from "@prisma/client";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const sessionConfig = {
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   },
-  secret: "a santa at nasa",
+  secret: process.env.SESSIONSECRET,
   resave: true,
   saveUninitialized: true,
   store: new PrismaSessionStore(new PrismaClient(), {
