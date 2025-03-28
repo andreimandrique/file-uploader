@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 
 import indexRouter from "./routes/indexRouter.js";
 import signupRouter from "./routes/signupRouter.js";
-import demoRouter from "./utils/demoRouter.js";
+import demoRouter from "./routes/demoRouter.js";
 import logoutRouter from "./routes/logoutRouter.js";
 import dashboardRouter from "./routes/dashboardRouter.js";
 import addFileRouter from "./routes/addFileRouter.js";
