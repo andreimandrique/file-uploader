@@ -54,6 +54,10 @@ app.use("/add-file", addFileRouter);
 app.use("/download", downloadRouter);
 app.use("/delete", deleteRouter);
 
+app.get("*", (req, res) => {
+  res.status(404).send("Not found");
+});
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   console.log(err);
