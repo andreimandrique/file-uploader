@@ -17,7 +17,14 @@ CLOUDINARY_API_KEY="<your cloudinary api key>"
 CLOUDINARY_API_SECRET="<your cloudinary api secret>"
 SESSIONSECRET="<your session secret>"
 ```
-### 4. Start the server
+### 4. Generate Prisma client
+In the root folder run
+```
+npx prisma generate
+
+```
+
+### 5. Start the server
 In development
 ```
 npm run dev
@@ -26,7 +33,7 @@ In production
 ```
 npm run start
 ```
-### 5. Access the application
+### 6. Access the application
 Open your browser and navigate to http://localhost:3000
 ## Features
 ### Basic Features
