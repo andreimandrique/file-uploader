@@ -12,7 +12,6 @@ npm install
 Create .env file in the root directory and add the following 
 ```
 DATABASE_URL="postgresql://<db role>:<db password>@<db host>/<db name>?sslmode=require"
-TEST_DATABASE_URL ="postgresql://<db role>:<db password>@<db host>/<db name>?sslmode=disable"
 CLOUDINARY_API_KEY="<your cloudinary api key>"
 CLOUDINARY_API_SECRET="<your cloudinary api secret>"
 SESSIONSECRET="<your session secret>"
